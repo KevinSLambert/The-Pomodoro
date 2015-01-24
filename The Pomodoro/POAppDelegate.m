@@ -7,12 +7,34 @@
 //
 
 #import "POAppDelegate.h"
+#import "TimerViewController.h"
+#import "RoundsViewController.h"
 
 @implementation POAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    
+    RoundsViewController *roundsViewController = [RoundsViewController new];
+    roundsViewController.tabBarItem.title = @"Rounds";
+    roundsViewController.tabBarItem.image = [UIImage imageNamed:@"rounds"];
+    
+    TimerViewController *timerViewController = [TimerViewController new];
+    timerViewController.tabBarItem.title = @"Timer";
+    timerViewController.tabBarItem.image = [UIImage imageNamed:@"clock"];
+    
+    
+    UITabBarController *tabBarController = [UITabBarController new];
+    tabBarController.viewControllers = @[[[UINavigationController alloc] initWithRootViewController:roundsViewController], [[UINavigationController alloc] initWithRootViewController:timerViewController]];
+    
+    [[UITabBar appearance] setBarTintColor:[UIColor blueColor]];
+    [[UITabBar appearance] setSelectedImageTintColor:[UIColor whiteColor]];
+    
+    [[UINavigationBar appearance] setBarTintColor: [UIColor blueColor]];
+    
+    self.window.rootViewController = tabBarController;
+    
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];

@@ -33,6 +33,8 @@ static NSString * const CurrentRoundKey = @"CurrentRound";
 
 - (void) registerForNotifications {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(endRound:) name:RoundCompleteNotificationName object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(roundEndedNotification) name:RoundCompleteNotificationName object:nil];
 }
 
 -(void)unregisterForNotification {

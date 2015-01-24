@@ -37,6 +37,8 @@
 
 -(void)registerForNotifications {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newRound:) name:NewRoundTimeNotificationName object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(roundEndedNotification) name:RoundCompleteNotificationName object:nil];
 }
 
 -(void)unregisterForNotifications {
@@ -46,6 +48,7 @@
 -(void)dealloc {
     [self unregisterForNotifications];
 }
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -61,6 +64,27 @@
     [self.button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
     self.active = YES;
     [self performSelector:@selector(decreaseSecond) withObject:nil afterDelay:1.0];
+    
+    [self setTimerLocalNotification];
+    
+}
+
+- (IBAction)setTimerLocalNotification {
+    
+    NSDate *notificationDate = [[NSDate date]  dateByAddingTimeInterval:self.minutes];
+    
+    UILocalNotification *notification = [UILocalNotification new];
+    if (notification) {
+        notification.fireDate = notificationDate;
+        notification.timeZone = [NSTimeZone defaultTimeZone];
+        notification.alertBody = @"Round has ended";
+        notification.soundName = @"bell_tree.mp3";
+        notification.repeatInterval = 0;
+        notification.applicationIconBadgeNumber = 1;
+        
+        [[UIApplication sharedApplication] scheduleLocalNotification:notification];
+    }
+    
 }
 
 -(void)decreaseSecond {
@@ -117,6 +141,18 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(void)roundEndedNotification {
+    
+    UIAlertController *endedController = [UIAlertController alertControllerWithTitle:@"Round Ended" message:nil preferredStyle:UIAlertControllerStyleAlert];
+    
+    [endedController addAction:[UIAlertAction actionWithTitle:@"Close" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+        [self updateLabel];
+    }]];
+    
+    [self presentViewController:endedController animated:YES completion:nil];
+    
 }
 
 /*

@@ -12,4 +12,6 @@ static NSString * const RoundCompleteNotificationName = @"RoundCompleteNotificat
 
 @interface TimerViewController : UIViewController
 
+-(void)roundEndedNotification;
+
 @end
